@@ -1,6 +1,7 @@
-import style from "./style.scss"
+import "./style.scss"
+import React from "react"
+import ReactDOM from "react-dom"
+import App from './app'
+import "@babel/polyfill";
 
-var div = document.createElement("div")
-var app = document.getElementById("app")
-div.innerHTML = "<span>aaa</span>"
-app.append(div)
+ReactDOM.render(<App />, document.getElementById("root"))

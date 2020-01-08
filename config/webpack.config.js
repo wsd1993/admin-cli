@@ -1,12 +1,10 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  mode: "development",
   entry: {
     main: "./src/index.js",
-    sub: "./src/index.js"
   },
   output: {
     filename: "[name].js",
@@ -37,7 +35,7 @@ module.exports = {
             }
           },
           "sass-loader",
-          // "postcss-loader"
+          "postcss-loader"
         ]
       },
       {
@@ -45,6 +43,11 @@ module.exports = {
         use: {
           loader: "file-loader"
         }
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
       }
     ]
   },
@@ -53,5 +56,29 @@ module.exports = {
       template: "public/index.html"
     }),
     new CleanWebpackPlugin()
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
+      // minRemainingSize: 0,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 6,
+      // maxInitialRequests: 4,
+      // automaticNameDelimiter: '~',
+      // automaticNameMaxLength: 30,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  }
 }
